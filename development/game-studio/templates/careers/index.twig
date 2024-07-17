@@ -1,0 +1,78 @@
+{% extends "_layouts/default-layout.twig" %}
+
+{% set globalCtaUrl = siteUrl('/who-we-are') %}
+{% set globalCtaText = 'Who We Are' %}
+{#{% set indicatorPosition = 'none' %}#}
+
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    [
+        'ourWorkProjects',
+        'ourWorkProjects.projectsCover'
+    ]
+) %}
+
+{% set jobs = craft.entries()
+    .section('careers')
+    .with([
+        ['careerLocation', { status: ['live', 'disabled'] }],
+        'careerType',
+        'careerDeparment',
+        'careerExperienceLevel',
+    ])
+    .all() %}
+
+{% set departments = jobs|group(j => j.careerDeparment[0].title)|ksort %}
+
+{% block content %}
+    {% include "_partials/content-builder.twig" %}
+
+    {% if jobs is not empty %}
+        {% set numberOfPositions = jobs|length %}
+        <section class="c-scrolling-text-section" {{ scrollAnimation | raw }}>
+            <p class="c-scrolling-text-section__text">{{ numberOfPositions }} Open Position{{ numberOfPositions > 1 ? 's' : '' }}</p>
+
+        </section>
+
+        <section class="c-tabs">
+            <div class="container container--xl c-tabs__container c-tabs__container--wide" {{ scrollAnimation | raw }}>
+                <div class="c-tabs__column">
+                    <ul class="c-tabs__list">
+                        {% for key, department in departments %}
+                            <li class="c-tabs__item {% if loop.first %}c-tabs__item--active{% endif %}" data-skill="{{ key }}">
+                                <button class="c-tabs__label">
+                                    <span>{{ key }}</span>
+                                    <span class="c-tabs__count">{{ department|length }}</span>
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="c-tabs__column">
+                    {% for key, department in departments %}
+                        {% if departments|length %}
+                            <div class="c-tabs__cards {% if loop.first %}c-tabs__cards--active{% endif %} c-card-grid-vertical" id="{{ key }}">
+                                {% for job in department %}
+                                    {% set location = job.careerLocation[0] ?? null %}
+                                    {% set type = job.careerType[0] ?? null  %}
+                                    <a href="{{ job.url }}" class="c-card-info c-card-info--arrow">
+                                        <div>
+                                            <div class="c-card-info__title"> {{ job.title }}</div>
+                                            <div class="c-card-info__description">{% if type %}{{ type.title }}{% endif %}{% if location %} / {{ location.title }}{% endif %}</div>
+                                        </div>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}
+
+
+{% block bodyJs %}
+    <script src="{{ alias('@web') }}{{ mix('js/our-work.js') }}"></script>
+{% endblock %}

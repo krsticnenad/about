@@ -1,0 +1,80 @@
+{% extends "_layouts/nobackground-layout.twig" %}
+
+{% set globalCtaUrl = '#apply' %}
+{% set globalCtaText = 'Apply for the Job' %}
+
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    [
+        'careerCover',
+        'careerType',
+        'careerDeparment',
+        'careerExperienceLevel',
+    ]
+) %}
+
+
+{% set image = entry.careerCover[0] %}
+
+{% block content %}
+    <div class="container--xl c-blog__container-image">
+        <div class="c-go-back styled-links">
+            <a href="{{ siteUrl('/careers') }}" class="c-go-back__link">Go back</a>
+        </div>
+        <img src="{{ image.url }}" alt="{{ image.title }}">
+    </div>
+
+    <header class="container--sm careers__header">
+        <div class="careers__description">
+            <h2 class="label">Job Summary</h2>
+            <h1 class="heading heading--h2">{{ entry.title }}</h1>
+            <div>{{ entry.careerDescription }}</div>
+        </div>
+        <dl class="careers__details c-item-list">
+            <dt>Location</dt>
+            <dd>{{ entry.careerLocation.anyStatus().one().title }}</dd>
+            <dt>Type</dt>
+            <dd>{{ entry.careerType[0].title }}</dd>
+            <dt>Experience Level</dt>
+            <dd>{{ entry.careerExperienceLevel[0].title }}</dd>
+            <dt>Department</dt>
+            <dd>{{ entry.careerDeparment[0].title }}</dd>
+        </dl>
+    </header>
+
+    <section class="container--sm careers__columns">
+        <div>{{ entry.careerLeftColumn }}</div>
+        <div>{{ entry.careerRightColumn }}</div>
+    </section>
+
+    <section class="container--xl">
+        <div class="c-card-info c-card-info--lg c-card--center">
+            <div class="c-card-info--lg__content">
+                <div class="heading heading--h2 mb-8">So, why not join us?</div>
+                <div class="c-card-info__description-normal">If you’re still reading this, it means you're just the kind of person we’re looking for. </div>
+            </div>
+            {% include "_partials/button-link.twig" with {
+                text: 'Apply for the job',
+                href: '#apply'
+            } %}
+        </div>
+    </section>
+
+
+    <section class="container--xl careers__form-section" id="apply">
+        <div class="careers__form-heading">
+            <h2 class="label">Apply for this Job</h2>
+            <h3 class="heading heading--h1">Fill the Form</h3>
+        </div>
+
+        {{ craft.freeform.form("careers").render({
+            overrideValues: {
+                jobTitle: entry.title,
+                department: entry.careerDeparment[0].title,
+                job: entry.url,
+            }
+        }) }}
+    </section>
+
+{% endblock %}

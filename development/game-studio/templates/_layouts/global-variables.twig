@@ -1,0 +1,51 @@
+{% spaceless %}
+{# Global variables that are only set if not set by the child #}
+{% if scrollText is not defined %}
+    {% set scrollText = 'Scroll' %}
+{% endif %}
+
+{% if indicatorPosition is not defined %}
+    {% set indicatorPosition = 'left' %}
+{% endif %}
+
+{% set isHome = false %}
+{% set url = craft.app.request.url %}
+{% if url == "/" %}
+    {% set isHome = true %}
+{% endif %}
+
+{% set globals = craft.globalSets()
+    .handle('website')
+    .with([
+        'globalBranding',
+        'globalBranding.logo',
+        'globalBranding.headerCtaLink',
+        'globalSocial',
+        'globalNavigation',
+        'globalFooter',
+        'globalBackground.backgroundImage',
+        'globalBackground.backgroundVideoMp4',
+        'globalBackground.backgroundVideoWebp',
+    ])
+    .one() %}
+
+{% set scrollAnimation = 'data-aos="fade"' %}
+
+
+{% block browserSupport %}
+    {% set browserSupport = [
+        'ie > 11',
+        'chrome > 55',
+        'firefox >= 50',
+        'safari > 7',
+        'edge >= 79',
+        'opera > 40'
+    ] %}
+    {{ craft.agent.redirect(browserSupport, 'no-support', 302) }}
+{% endblock %}
+
+
+
+{% block htmlPage %}
+{% endblock %}
+{% endspaceless %}

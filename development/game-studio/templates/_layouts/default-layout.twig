@@ -1,0 +1,59 @@
+{% extends "_layouts/base-layout.twig" %}
+
+{% block body %}
+    {% set backgroundImage = globals.globalBackground[0].backgroundImage[0] ?? null %}
+    {% set backgroundMp4 = globals.globalBackground[0].backgroundVideoMp4[0] ?? null %}
+    {% set backgroundWebp = globals.globalBackground[0].backgroundVideoWebp[0] ?? null %}
+
+    {% if craft.app.session.hasFlash('notice') or craft.app.session.hasFlash('error') %}
+        <div class="c-notification">
+            <div class="c-notification__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 16 16"><defs><linearGradient x1="100%" y1="0%" x2="0%" y2="100%" id="a"><stop stop-color="#F84291" offset="0%"/><stop stop-color="#FF1132" offset="100%"/></linearGradient></defs><path d="M16 12a8 8 0 11-16 0 8 8 0 0116 0zm-8.925 4.236L13.01 10.3a.516.516 0 000-.73l-.73-.73a.516.516 0 00-.73 0l-4.84 4.841-2.26-2.26a.516.516 0 00-.73 0l-.73.73a.516.516 0 000 .73l3.355 3.355a.516.516 0 00.73 0z" transform="translate(0 -4)" fill="url(#a)"/></svg>
+            </div>
+            <div class="c-notification__text">
+                {% if craft.app.session.hasFlash('notice') %}
+                    {{ craft.app.session.getFlash('notice') }}
+                {% elseif craft.app.session.hasFlash('error') %}
+                    {{ craft.app.session.getFlash('error') }}
+                {% endif %}
+            </div>
+            <button class="c-notification__close"></button>
+        </div>
+    {% endif %}
+
+    {% include "_partials/global-header.twig" with {
+        globals: globals,
+    } %}
+    {% embed "_partials/global-background.twig" with {
+        scrollText: scrollText,
+        indicatorPosition: indicatorPosition,
+    } %}
+        {% block background %}
+        {% endblock %}
+    {% endembed %}
+
+    <main class="content {% block contentClass %}{% endblock %}" id="content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <section class="footer-background">
+        {% block contactForm %}
+            {% include "_partials/global-footer-form.twig" with { globals: globals } %}
+        {% endblock %}
+
+        {% block footer %}
+            {% include "_partials/global-footer.twig" with { globals: globals } %}
+        {% endblock %}
+        {% if backgroundMp4 %}
+            <video autoplay muted loop webkit-playsinline playsinline class="footer__video lazy" {% if backgroundImage %}poster="{{ backgroundImage.url }}"{% endif %}>
+                {% if backgroundWebp %}
+                    <source data-src="{{ backgroundWebp.url }}" src=""  type="video/webm">
+                {% endif %}
+                <source data-src="{{ backgroundMp4.url }}" src="" type="video/mp4">
+            </video>
+        {% endif %}
+    </section>
+
+{% endblock %}
+

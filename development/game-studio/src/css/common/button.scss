@@ -1,0 +1,141 @@
+$border-width: 2px;
+$button-height: 44px;
+// Gradient angle
+$angle: 45deg;
+// Glow reveal
+$glow-position: 45%;
+
+
+.button {
+  @extend %gothic-style;
+  display: inline-block;
+  padding: 0 24px;
+  height: $button-height;
+  line-height: $button-height;
+  background-color: rgba($brand-primary, .2);
+  border: 1px solid $brand-primary;
+  color: #fff;
+  @include font-size(12px);
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  padding: 0;
+  // Sorry for this.
+  outline: none;
+  color: inherit;
+  font: inherit;
+}
+
+.glow-button {
+  position: relative;
+  @extend %gothic-style;
+  display: inline-block;
+  padding: 0 24px;
+  height: $button-height;
+  line-height: $button-height;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  border: 0;
+  background-image: linear-gradient(
+                  $angle,
+                  rgba($brand-primary, 0.12),
+                  rgba($brand-secondary, 0.12)
+  );
+  color: #fff;
+  @include font-size(12px);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+
+  &::before {
+    content: "";
+    @include absolute(0);
+    transition: opacity 0.3s ease-in-out;
+    background-image: linear-gradient(
+                    $angle,
+                    rgba($brand-primary, 0.06),
+                    rgba($brand-secondary, 0.06)
+    );
+    opacity: 0;
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba($brand-secondary, 0.32);
+    clip-path: polygon(
+                    0% 100%,
+                    $border-width 100%,
+                    $border-width $border-width,
+                    calc(100% - #{$border-width}) $border-width,
+                    calc(100% - #{$border-width}) $button-height - $border-width,
+                    $border-width $button-height - $border-width,
+                    $border-width 100%,
+                    100% 100%,
+                    100% 0%,
+                    0% 0%
+    );
+  }
+
+  &__bg::before,
+  &__bg::after {
+    position: absolute;
+    width: 110%;
+    padding-top: 100%;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &__bg::before {
+    top: 0;
+    right: $glow-position;
+    content: "";
+    transform: rotate($angle);
+    background-image: linear-gradient(
+                    0,
+                    rgba($brand-primary, 1) 0%,
+                    rgba($brand-primary, 1) 70%,
+                    rgba($brand-primary, 0) 100%
+    );
+    z-index: -1;
+  }
+
+  &__bg::after {
+    bottom: 0;
+    left: $glow-position;
+    content: "";
+    transform: rotate($angle);
+    background-image: linear-gradient(
+                    180deg,
+                    rgba($brand-primary, 1) 0%,
+                    rgba($brand-primary, 1) 70%,
+                    rgba($brand-primary, 0) 100%
+    );
+    z-index: -1;
+  }
+
+  &:hover {
+    &::before {
+      opacity: 1;
+    }
+    .glow-button__bg {
+      &::before {
+        transform: rotate($angle) translate(10%, -50%);
+      }
+      &::after {
+        transform: rotate($angle) translate(-10%, 50%);
+      }
+    }
+  }
+}

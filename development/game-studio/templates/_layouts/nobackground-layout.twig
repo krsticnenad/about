@@ -1,0 +1,27 @@
+{% extends "_layouts/base-layout.twig" %}
+
+{% set globals = craft.globalSets()
+    .handle('website')
+    .with([
+        'globalBranding',
+        'globalBranding.logo',
+        'globalBranding.headerCtaLink',
+        'globalSocial',
+        'globalNavigation',
+        'globalFooter',
+    ])
+    .one() %}
+
+{% block body %}
+    {% include "_partials/global-header.twig" with { globals: globals } %}
+    <main class="content content--spacing">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+        {% include "_partials/global-footer.twig" with { globals: globals } %}
+    {% endblock %}
+
+{% endblock %}
+

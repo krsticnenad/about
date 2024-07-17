@@ -1,0 +1,193 @@
+/**
+ * components/typography.css
+ * 
+ * Typography rules.
+ *
+ */
+
+%gothic-style {
+  font-family: $global-header-font-family;
+  text-transform: uppercase;
+}
+
+%heading {
+  margin: 0;
+  color: $global-header-color;
+  @extend %gothic-style;
+}
+
+
+.heading {
+  &,
+  &--h1,
+  &--h2,
+  &--h3,
+  &--h4 {
+    @extend %heading;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  &--h1-super {
+    @include font-size($h1-super-font-size, 104px);
+
+    @include laptop { @include font-size(72px, 88px) }
+    @include tablet { @include font-size(64px, 80px) }
+    @include phablet { @include font-size(48px, 64px) }
+  }
+
+  &--h1 {
+    @include font-size($h1-font-size);
+
+    @include large { @include font-size(72px, 88px) }
+    @include tablet { @include font-size(56px, 72px) }
+    @include phablet { @include font-size(40px, 56px) }
+  }
+
+  &--h2 {
+    @include font-size($h2-font-size);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+
+    @include large { @include font-size(56px, 68px) }
+    @include laptop { @include font-size(40px, 52px) }
+    @include phablet { @include font-size(32px, 44px) }
+  }
+
+  &--h3 {
+    @include font-size($h3-font-size);
+  }
+
+  &--h4 {
+    @include font-size($h4-font-size);
+  }
+}
+
+.label {
+  display: block;
+  @extend %gothic-style;
+  margin: 0 0 $label-title-spacing;
+  color: $brand-primary;
+  letter-spacing: 3px;
+  font-weight: 500;
+  @include font-size($label-font-size, 1);
+}
+
+p {
+  margin: 0;
+  color: rgba($global-text-color, .5);
+  @include font-size(18px);
+  font-weight: 300;
+  line-height: 26px;
+}
+
+.styled-links a,
+.styled-links .link, {
+  @extend %gothic-style;
+  display: inline-block;
+  position: relative;
+  color: #fff;
+  @include font-size(12px, 17px);
+  letter-spacing: 2px;
+  text-decoration: none;
+  padding-bottom: 6px;
+
+  &::after {
+    content: "";
+    @include absolute(bottom -2px left 0);
+    width: 100%;
+    height: 1px;
+    will-change: transform, background-color;
+    background-color: #fff;
+    transform: scale3d(0, 1, 1);
+    transform-origin: 100% 50%;
+    transition: transform .35s cubic-bezier(.25, .46, .45, .94);
+  }
+
+  &:hover::after {
+    transform: scale3d(1, 1, 1);
+    transform-origin: 0 50%;
+    transition-timing-function: ease;
+  }
+
+  &::before {
+    content: '';
+    @include absolute(bottom -2px left 0 right 0);
+    height: 1px;
+    background-color: $global-border-color;
+  }
+}
+
+.styled-links a {
+  &[href^="mailto:"],
+  &[href^="tel:"] {
+    font-family: $global-font-family;
+    text-transform: none;
+    @include font-size(16px, 26px);
+  }
+}
+
+.icon {
+  display: inline-block;
+  line-height: 0;
+
+  svg {
+    width: 1em;
+    height: 1em;
+    //vertical-align: -4px;
+    fill: currentColor;
+    overflow: hidden;
+
+  }
+}
+
+a {
+  color: #fff;
+}
+
+figure {
+  margin: 48px 0;
+  border-bottom: 1px solid rgba(#fff, .1);
+}
+
+figcaption {
+  margin: 12px 0;
+  color: rgba($global-text-color, .48);
+  @include font-size(14px);
+
+}
+
+blockquote {
+  position: relative;
+  max-width: 480px;
+  margin: 48px 0;
+  padding-bottom: 48px;
+  @include font-size(22px);
+  color: #fff;
+  font-style: italic;
+
+  &::before {
+    content: '';
+    @include absolute(left -48px top 0 bottom 0);
+    width: 2px;
+    background-image: linear-gradient(to bottom, $brand-primary, rgba($brand-primary, 0));
+  }
+}
+
+
+%cube {
+  @include size(12px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='100%25' x2='0%25' y1='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23F84291'/%3E%3Cstop offset='100%25' stop-color='%23FF1132'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0%25' x2='100%25' y1='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23F84291' stop-opacity='0'/%3E%3Cstop offset='23.428%25' stop-color='%23FF1132' stop-opacity='.32'/%3E%3Cstop offset='84.826%25' stop-color='%23FF1132' stop-opacity='.32'/%3E%3Cstop offset='100%25' stop-color='%23F84291' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' x1='0%25' x2='100%25' y1='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23F84291'/%3E%3Cstop offset='35.803%25' stop-color='%23FF1132' stop-opacity='0'/%3E%3Cstop offset='64.338%25' stop-color='%23FF1132' stop-opacity='0'/%3E%3Cstop offset='100%25' stop-color='%23F84291'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath fill='url(%23a)' fill-opacity='.12' stroke='url(%23b)' d='M.5.5h11v11H.5z'/%3E%3Cpath stroke='url(%23c)' d='M.5.5h11v11H.5z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+@include tablet {
+  figure {
+    margin: 32px 0;
+  }
+  blockquote::before {
+    left: -24px;
+  }
+  p {
+    @include font-size(16px, 24px)
+  }
+}

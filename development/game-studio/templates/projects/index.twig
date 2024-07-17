@@ -1,0 +1,54 @@
+{% extends "_layouts/default-layout.twig" %}
+
+{% set globalCtaUrl = siteUrl('/work-with-us') %}
+{% set globalCtaText = 'Contact Us' %}
+{% set indicatorPosition = 'none' %}
+
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    [
+        'ourWorkProjects',
+        'ourWorkProjects.projectsCover',
+        'ourWorkProjects.projectThumbnail'
+    ]
+) %}
+
+{% block content %}
+    {% include "_sections/heroSection.twig" with {
+        block: {
+            heroLabel: entry.ourWorkLabel,
+            heroTitle: entry.ourWorkTitle
+        },
+        class: 'our-work-header',
+        isHome: false,
+    } %}
+
+    <div class="c-our-work">
+        <div class="container--xl c-our-work__container">
+            {% for project in entry.ourWorkProjects %}
+                {% set image = project.projectThumbnail[0] ?? null %}
+                {% if image %}
+                    <a href="{{ project.url }}" class="c-our-work__item">
+                        <div class="c-our-work__item-bg" style="background-image: url({{ image.url }})"></div>
+                        <span class="c-our-work__title">{{ project.title }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container">
+        {% embed "_partials/alert.twig" %}
+            {% block content %}
+                {{ entry.ourWorkDisclaimer }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    {% include "_partials/content-builder.twig" %}
+{% endblock %}
+
+{% block bodyJs %}
+    <script src="{{ alias('@web') }}{{ mix('js/our-work.js') }}"></script>
+{% endblock %}

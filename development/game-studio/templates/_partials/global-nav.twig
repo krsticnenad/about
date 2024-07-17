@@ -1,0 +1,25 @@
+{% set social = globals.globalSocial[0] ?? null %}
+
+<nav class="c-navigation">
+    <div class="c-navigation__container container--xxl">
+        <ul class="c-navigation__list">
+            {% for item in globals.globalNavigation %}
+                <li class="c-navigation__item">
+                    <a href="{{ item.url }}" aria-label="Return home" class="c-navigation__link {{entry is defined ? item.id == entry.id ? 'c-navigation__link--active' : '' }}">
+                        {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="c-navigation__contact">
+            <div class="c-navigation__contact-label">Contact us</div>
+            <div class="c-navigation__contact-links styled-links">
+                <a href="mailto:{{ social.email }}">{{ social.email }}</a>
+                <a href="tel:{{ social.phoneNumber }}">{{ social.phoneNumber }}</a>
+            </div>
+            <div class="c-social-icons">
+                {% include "_partials/social-buttons.twig" with { social: social } %}
+            </div>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,46 @@
+{% set logo =  globals.globalBranding[0].logo[0] ?? null %}
+
+
+{% set hasNavSet = hasNav is defined ? hasNav : true %}
+{% set hasCtaSet = hasCta is defined ? hasCta : true %}
+{% set ctaUrl = globalCtaUrl is defined ? globalCtaUrl : globals.globalBranding[0].headerCtaLink[0].url  %}
+{% set ctaText = globalCtaText is defined ? globalCtaText : globals.globalBranding[0].headerCtaText  %}
+
+<header class="c-global-header">
+    <div class="container--xxl c-global-header__container">
+        {% if hasNavSet %}
+            <div class="c-global-header__trigger">
+                <button class="c-navigation-trigger" id="navigationTrigger" aria-label="Toggle menu">
+                    <span class="c-navigation-trigger__label c-navigation-trigger__label--open">MENU</span>
+                    <span class="c-navigation-trigger__label c-navigation-trigger__label--close">CLOSE</span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                        <polyline class="path top" points="1 25 1 1 49 1 49 13" />
+                        <polyline class="path bottom" points="1 25 1 49 49 49 49 37" />
+                    </svg>
+                </button>
+            </div>
+        {% endif %}
+        {% if logo %}
+            <div class="c-global-header__logo-container">
+                <a href="{{ siteUrl }}"><img src="{{ logo.url }}" alt="" class="c-global-header__logo"></a>
+            </div>
+        {% endif %}
+        {% if hasCtaSet %}
+            <div class="c-global-header__button">
+                {% include "_partials/button-link.twig" with { text: ctaText, href: ctaUrl } %}
+            </div>
+        {% endif %}
+    </div>
+    {% if craft.app.request.absoluteUrl == siteUrl %}
+        <div class="container--xxl c-scroll-progress-container">
+            <div class="c-scroll-progress">
+                <span class="c-scroll-progress__text c-scroll-progress__text--start">01</span>
+                <div class="c-scroll-progress__bar"><div class="c-scroll-progress__indicator"></div></div>
+                <span class="c-scroll-progress__text c-scroll-progress__text--end">01</span>
+            </div>
+        </div>
+    {% endif %}
+</header>
+
+{% include "_partials/global-nav.twig" with { globals: globals } %}

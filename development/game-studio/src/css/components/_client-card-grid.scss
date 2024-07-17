@@ -1,0 +1,54 @@
+$root: '.client-card-grid';
+
+$grid-spacing: 16px;
+
+#{$root} {
+  display: grid;
+  grid-template-columns: repeat(2, 280px);
+  grid-gap: $grid-spacing;
+  counter-reset: cards;
+
+  > div:nth-child(2n) { transform: translateY(50%); }
+
+  &--sm { grid-template-columns: repeat(2, 200px); }
+}
+
+#{$root}-vertical {
+  > * + * { margin-top: 16px; }
+}
+
+
+@include laptop {
+  #{$root} {
+    &:not(#{$root}--sm) {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 24px;
+
+      > div:nth-child(2n) { transform: none; }
+    }
+  }
+}
+
+@include tablet {
+  #{$root} {
+    &:not(#{$root}--sm) {
+      grid-template-columns: 1fr;
+      grid-gap: 16px;
+
+      > div:nth-child(2n) { transform: none; }
+    }
+  }
+}
+
+@include laptop {
+  #{$root} {
+    &--sm { grid-template-columns: 320px; }
+    > div:nth-child(2n) { transform: none; }
+  }
+}
+
+@include phablet {
+  #{$root} {
+    &--sm { grid-template-columns: 1fr; }
+  }
+}

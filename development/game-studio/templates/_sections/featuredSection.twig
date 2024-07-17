@@ -1,0 +1,70 @@
+{% set buttonUrl = block.featuredButtonLink[0] ?? null %}
+{% set featuredCards = block.featuredCards.anyStatus()
+    .level(1)
+    .with([
+        'skillIconn',
+        ['children', {status: null} ],
+        'children.skillIconn'
+    ])
+    .all() %}
+{#{% dd block.featuredCards %}#}
+
+<section class="featured-section c-inner-section c-inner-section--left">
+    <div class="c-inner-section__container container" {{ scrollAnimation | raw }}>
+        <div class="c-inner-section__column">
+            <header class="c-inner-section__header">
+                <p class="c-inner-section__label">{{ block.featuredLabel }}</p>
+                <h2 class="c-inner-section__title">{{ block.featuredTitle }}</h2>
+            </header>
+            <div class="c-inner-section__content">
+                <div class="c-inner-section__text">{{ block.featuredText }}</div>
+                {% if buttonUrl %}
+                    {% include "_partials/button-link.twig" with { text: block.featuredButtonText, href: buttonUrl.url } %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="c-inner-section__column c-card-grid">
+            {% for card in block.featuredCards.anyStatus().with(['skillIconn']).all() %}
+                {% set icon = card.skillIconn[0] ?? null %}
+                <div class="c-card styled-links">
+                    {% if icon %}
+                        <div class="c-card__icon">
+                            <img src="{{ icon.url }}" alt="{{ icon.title }}">
+                        </div>
+                    {% endif %}
+                    <div class="c-card__header">
+                        <div>
+                            <div class="c-card__title">{{ card.title }}</div>
+                            <p class="c-card__description">{{ card.skillsDescription }}</p>
+                        </div>
+                        <button class="c-card__link link" data-micromodal-trigger="skill-{{ card.slug }}">See more</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {#  Modals #}
+    {% for card in featuredCards %}
+        {% embed "_partials/modal.twig" with {id: 'skill-' ~ card.slug} %}
+            {% block title %}{{ card.title }}{% endblock %}
+            {% block content %}
+                <div class="c-subskills">
+                    {% for subskill in card.children %}
+                        {% set icon = subskill.skillIconn[0] ?? null %}
+                        <div class="c-subskills__item">
+                            {% if icon %}
+                                <div class="c-subskills__icon icon">{{ svg(icon) }}</div>
+                            {% endif %}
+                            <div class="c-subbskills__title">{{ subskill.title }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% include "_partials/button-link.twig" with { text: "Get in touch", href: siteUrl('/work-with-us') } %}
+            {% endblock %}
+            {% block footer %}{% endblock %}
+        {% endembed %}
+    {% endfor %}
+</section>
+
+

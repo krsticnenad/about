@@ -1,0 +1,256 @@
+$root: '.client-card';
+
+$card-background-color: #0A0A0A;
+$card-padding: 24px;
+$card-padding-top: 32px;
+
+#{$root} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $card-background-color;
+  padding: $card-padding-top $card-padding $card-padding;
+  text-align: center;
+  justify-content: center;
+
+  &::before {
+    content: '';
+    @include absolute(top 12px left 12px);
+    @include size(12px);
+    border-radius: 50%;
+    border: 1px solid rgba(218,216,242,0.12);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include size(auto, 144px);
+    margin: 0 auto;
+    line-height: 0;
+  }
+
+  &__title {
+    @extend %gothic-style;
+    @include font-size(18px);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  &__description {
+    margin-top: 8px;
+    margin-bottom: 68px;
+    @include font-size(14px);
+    letter-spacing: 0;
+  }
+
+  &__link {
+    margin-top: auto;
+  }
+
+  &--sm {
+    padding-top: 48px;
+    padding-bottom: 40px;
+
+    &::before {
+      top: auto;
+      left: auto;
+      right: 12px;
+      bottom: 12px;
+    }
+
+    &::after {
+      counter-increment: cards;
+      content: '0' counter(cards);
+      @include absolute(top 12px left 12px);
+      @extend %gothic-style;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4px;
+      line-height: 17px;
+      color: rgba($global-text-color, .3);
+
+    }
+
+    #{$root}__icon {
+      @include size(96px);
+    }
+  }
+}
+
+#{$root}--center {
+  align-items: center;
+}
+
+#{$root}--vertical {
+  flex-direction: column !important;
+}
+
+#{$root}--sm {
+  #{$root}__icon {
+    @include size(96px);
+  }
+
+  #{$root}__description { margin: 8px 0 0; }
+}
+
+#{$root}-info {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 60px 32px 32px;
+
+  background-color: $card-background-color;
+
+  text-decoration: none;
+
+  &--lg {
+    padding: 80px;
+
+    &__content { margin-right: 32px;}
+  }
+
+  &__title {
+    @extend %gothic-style;
+    @include font-size(24px);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  &__description {
+    @extend %gothic-style;
+    margin-top: 8px;
+    color: rgba($global-text-color, .3);
+    @include font-size(12px);
+    letter-spacing: 3px;
+  }
+
+  &__description-normal {
+    color: rgba(218, 216, 242, 0.32);
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: -0.25px;
+  }
+}
+
+#{$root}-info--arow {
+  &::after {
+    content: '';
+
+    position: absolute;
+    top: 50%;
+    right: 32px;
+
+    @include size(20px);
+    margin-top: -10px;
+    transform: rotate(45deg);
+    transition: opacity .2s ease-in-out;
+
+    border: 1px solid #fff;
+    border-width: 1px 1px 0 0;
+
+    opacity: 0.3;
+  }
+
+  &:hover::after { opacity: 1;}
+}
+
+
+@include laptop {
+  #{$root} {
+    padding: 40px 24px;
+    flex-direction: row;
+
+    &__icon {
+      @include size(auto);
+      img { @include size(100%); }
+    }
+
+    &__header {
+      text-align: left;
+      padding-left: 24px;
+    }
+
+    &__description { margin: 8px 0 24px; }
+
+    &--sm {
+      flex-direction: column;
+      padding: 48px 52px 40px 52px;
+    }
+  }
+}
+
+@include tablet {
+  #{$root} {
+    padding: 40px 32px;
+
+    &__icon {
+      margin: 0 32px 0 0;
+    }
+
+    &__header {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+    }
+
+    &__description { margin-bottom: 0; }
+
+    &__link { margin-top: 0; }
+
+    &-info--lg {
+      flex-direction: column;
+      padding: 40px;
+
+      &__content { margin-bottom: 32px; }
+    }
+
+    &-info__description {
+      margin-bottom: 32px;
+    }
+
+    &--sm {
+      flex-direction: row;
+      padding: 32px 24px;
+
+      #{$root}__icon {
+        margin-right: 24px;
+        @include size(auto);
+      }
+    }
+  }
+}
+
+@include phablet {
+  #{$root} {
+    flex-direction: column;
+    padding: 32px 24px;
+    max-width: 350px;
+
+    &__header {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &__icon {
+      margin: 0 0;
+    }
+
+    &__link { margin-top: 32px; }
+
+    &--sm {
+      flex-direction: row;
+      padding: 32px 24px;
+
+      #{$root}__icon {
+        margin-right: 24px;
+        margin-bottom: 0;
+        @include size(64px);
+      }
+    }
+  }
+}

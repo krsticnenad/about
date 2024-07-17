@@ -1,0 +1,56 @@
+{% extends "_layouts/global-variables.twig" %}
+{% set enableCursor = getenv('ENABLE_CURSOR')|default(false) %}
+
+
+{%- block htmlPage -%}
+    {% minify %}
+        <!DOCTYPE html>
+        <html lang="{{ craft.app.language | slice(0,2) }}">
+        <head>
+            <meta charset="utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="preload" href="https://use.typekit.net/pjd8njo.css" as="style">
+            <link rel="preconnect dns-prefetch" href="https://use.typekit.net">
+            <link rel="stylesheet" href="https://use.typekit.net/pjd8njo.css">
+            {% include "_partials/meta.twig" %}
+
+            {# -- Any <meta> tags that should be included in the <head> #}
+            {% block headMeta %}
+            {% endblock headMeta %}
+
+            {# -- Any <link> tags that should be included in the <head> #}
+            {% block headLinks %}
+            {% endblock headLinks %}
+
+            {# -- Any JavaScript that should be included before </head> -- #}
+            {% block headJs %}
+            {% endblock headJs %}
+
+            {#-- Site-wide CSS --#}
+            <link rel="stylesheet" href="{{ alias('@web') }}{{ mix('css/app.css') }}">
+
+            {# -- Any CSS that should be included before </head> -- #}
+            {% block headCss %}
+            {% endblock headCss %}
+        </head>
+
+        <body class="{% if isHome %}home{% endif %}{% if enableCursor %} enable-cursor{% endif%} {% if bodyClass is defined %}{{ bodyClass }}{% endif %}">
+        {% include "_partials/icons.twig" %}
+        <div id="cursor"></div>
+        {# -- Page content that should be included in the <body> -- #}
+        {% block body %}
+        {% endblock body %}
+
+        {#-- Site-wide JavaScript --#}
+        {% block js %}
+            <script src="{{ alias('@web') }}{{ mix('js/app.js') }}"></script>
+        {% endblock %}
+
+        {# -- Any JavaScript that should be included before </body> -- #}
+        {% block bodyJs %}
+        {% endblock bodyJs %}
+        </body>
+        </html>
+    {% endminify %}
+{%- endblock htmlPage -%}

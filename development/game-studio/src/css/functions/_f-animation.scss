@@ -1,0 +1,10 @@
+
+/**
+  * Given a grid layout delay each column by $delay times nth position.
+  * This will create a cascaded loading effect for a single row.
+ */
+@mixin delay-n-items($columns, $delay, $initial-delay: 0, $property: transition) {
+  @for $i from 1 through $columns {
+    @include nth-column($columns, $i) { #{$property}-delay: unquote("#{$initial-delay + $i * $delay}s"); }
+  }
+}

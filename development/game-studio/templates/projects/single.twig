@@ -1,0 +1,84 @@
+{% extends "_layouts/nobackground-layout.twig" %}
+
+{% set globalCtaUrl = siteUrl('/work-with-us') %}
+{% set globalCtaText = 'Contact Us' %}
+
+{% do craft.app.elements.eagerLoadElements(
+    className(entry),
+    [entry],
+    [
+        'projectsCover',
+        'projectClient',
+        'projectServices',
+        'projectGallery',
+    ]
+) %}
+
+{% set cover = entry.projectsCover[0] ?? null %}
+
+
+{% block content %}
+    <div class="container--xl c-our-work-single__container">
+        <div class="c-our-work-single__cover" style="background-image: url('{{ cover.url }}')">
+            <div class="c-go-back styled-links"><a href="{{ siteUrl('/our-work') }}" class="c-go-back__link">Go back</a></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="c-our-work-single__content">
+            <div class="c-our-work-single__info">
+                <p class="c-our-work-single__label">{{ entry.projectLabel }}</p>
+                <h1 class="c-our-work-single__title">{{ entry.title }}</h1>
+                <div class="c-our-work-single__text">{{ entry.projectText }}</div>
+            </div>
+            <div class="c-our-work-single__sidebar">
+                <ul class="c-our-work-single__list">
+                    {% if entry.projectClient %}
+                        <li>
+                            <strong>Client</strong>
+                            {% for client in entry.projectClient %}
+                                <span>{{ client.title }}</span>
+                            {% endfor %}
+                        </li>
+                    {% endif %}
+                    {% if entry.projectDate %}
+                       <li>
+                           <strong>Year</strong>
+                           <span>{{ entry.projectDate | date('Y') }}</span>
+                       </li>
+                    {% endif %}
+                    {% if entry.projectServices %}
+                       <li>
+                           <strong>Services</strong>
+                           {% set services = [] %}
+                           {% for service in entry.projectServices %}
+                               {% set services = services | merge([service.title]) %}
+                           {% endfor %}
+                           <span>{{ services | join(', ') }}</span>
+                       </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container--xl c-our-work-single__container">
+        {% if entry.projectGallery %}
+            <div class="c-our-work-single__gallery" id="gallery">
+                {% for image in entry.projectGallery %}
+                    <a href="{{ image.url }}"
+                       data-pswp-width="{{ image.width }}"
+                       data-pswp-height="{{ image.height }}"
+                       target="_blank"
+                       data-sub-html=".caption"
+                       class="c-our-work-single__gallery-item c-our-work__item">
+                        <div class="c-our-work__item-bg" style="background-image: url({{ image.url }})"></div>
+                        <span class="caption">{{ image.title }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block bodyJs %}
+    <script src="{{ alias('@web') }}{{ mix('js/our-work.js') }}"></script>
+{% endblock %}

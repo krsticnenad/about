@@ -1,0 +1,128 @@
+$root: '.careers';
+
+$columns-gap: 120px;
+$form-columns-gap: 48px;
+
+#{$root} {
+  &__header {
+    display: flex;
+    margin-top: 80px;
+    padding-bottom: 120px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__details {
+    flex: 1 0 25%;
+    margin-left: 120px;
+  }
+
+  &__columns {
+    display: flex;
+    margin: 120px auto 112px auto;
+
+    > * {
+      flex: 1 0 auto;
+      max-width: 50%;
+      padding-right: $columns-gap / 2;
+    }
+
+    > *:last-child { padding: 0 0 0 $columns-gap / 2; }
+
+    h2, h3 {
+      @extend %gothic-style;
+      margin: 1em 0;
+      color: #fff;
+      @include font-size(28px);
+    }
+
+    p, ul, ol { color: rgba($global-text-color, .48); }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      li {
+        position: relative;
+        padding-left: 20px;
+
+        + li { margin-top: 8px;}
+      }
+
+      li::before {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        content: '';
+        display: inline-block;
+        @include size(8px);
+        border: 1px solid $brand-primary;
+        border-radius: 50%;
+        background: linear-gradient(83.46deg, rgba(255, 17, 50, 0.12) 0%, rgba(248, 66, 145, 0.12) 100%);
+      }
+    }
+  }
+}
+
+.careers__form-section {
+  display: flex;
+  margin: 240px auto 112px auto;
+
+  .careers__form-heading {
+    margin-right: 64px;
+    max-width: 30%;
+    min-width: 280px;
+  }
+
+  .careers__form-columns {
+    display: flex;
+  }
+}
+
+@include tablet {
+  #{$root} {
+    &__header {
+      flex-direction: column;
+    }
+    &__description {
+    }
+    &__details {
+      margin: 64px 0 0 0;
+    }
+    &__columns {
+      display: block;
+      margin: 120px auto;
+
+      > * {
+        max-width: 100%;
+        padding: 0 !important;
+
+        + * { margin-top: 64px}
+      }
+    }
+  }
+
+  .careers__form-section {
+    display: block;
+    margin: 120px auto 64px 0;
+
+    .careers__form-heading {
+      margin: 0 0 64px;
+      max-width: 100%;
+    }
+  }
+}
+
+@include above-laptop {
+  #{$root} {
+    &__header {
+      max-width: 1200px;
+    }
+  }
+
+  .careers__form-section {
+    .careers__form-heading {
+      margin-right: 128px;
+    }
+  }
+}

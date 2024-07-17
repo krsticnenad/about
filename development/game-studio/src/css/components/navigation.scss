@@ -1,0 +1,186 @@
+$root: '.c-navigation';
+$trigger: #{$root}-trigger;
+
+$trigger-border-color: #464646;
+
+$nav-side-padding-desktop: 160px;
+$nav-side-padding-mobile: 40px;
+$nav-side-padding: 160px;
+
+$hand-right-offset: 20%;
+
+#{$root} {
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  @include fixed(0);
+  padding-top: $header-height;
+  background-color: #000;
+  @include z-index('navigation');
+
+  &__container {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 160px;
+
+    background-image: url("/img/hand.jpg");
+    background-size: 340px;
+    background-repeat: no-repeat;
+    background-position: bottom right 260px;
+
+    //@include desktop { background-position: bottom right 25%; }
+  }
+
+  /* purgecss ignore */
+  &--shown { pointer-events: all; }
+
+  &__list {
+    counter-reset: navigation;
+    @extend %reset-list;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__item {
+    position: relative;
+    top: -1 * $header-height / 2;
+    padding: 16px 0 16px 40px;
+
+    &::before {
+      @extend %gothic-style;
+      @include absolute(top 16px left 0);
+      counter-increment: navigation;
+      content: '0' counter(navigation);
+      color: rgba($global-text-color, .3);
+      @include font-size(12px);
+      letter-spacing: 4px;
+    }
+  }
+
+  &__link {
+    @extend %gothic-style;
+    color: rgba($global-text-color, .3);
+    @include font-size(56px);
+    line-height: 1;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: color .3s ease-in-out;
+
+    &:hover, &--active { color: #fff; }
+  }
+}
+
+#{$root}__contact {
+
+  &-label {
+    @extend .label;
+  }
+
+  &-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    a {
+      display: inline-block;
+      margin-top: 12px;
+    }
+  }
+}
+
+#{$trigger} {
+  position: relative;
+  @include size(48px);
+
+  padding: 0;
+  background: none;
+  border: 0;
+  outline: 0;
+
+  &__label--close {
+    opacity: 0;
+  }
+
+  .path {
+    fill: none;
+    stroke: $trigger-border-color;
+    stroke-width: 1px;
+  }
+
+  &__label {
+    @extend %gothic-style;
+    @include absolute(top 50% right 0);
+    transform: translate(50%, -50%);
+    color: #fff;
+    @include font-size(10px);
+    font-weight: 500;
+    letter-spacing: 4px;
+  }
+}
+
+#{$root}-overlay {
+  @include fixed(bottom 0 right $hand-right-offset);
+  height: 4px;
+  width: 4px;
+  transform: translateX(-20px) translateY(20px);
+
+  span {
+    background-color: red;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+    transform: scale(0);
+  }
+}
+
+.content--spacing {
+  padding-top: $header-height;
+}
+
+
+@include large {
+  #{$root}__contact {
+
+    &-links {
+      a[href^="mailto:"],
+      a[href^="tel:"] {
+        display: inline-block;
+        margin-top: 12px;
+        @include font-size(18px);
+      }
+    }
+  }
+}
+
+@include desktop {
+  #{$root} {
+    background-size: 220px;
+    &__item { padding: 12px 0 12px 40px; }
+  }
+}
+
+@include laptop {
+  #{$root} {
+    &__link { @include font-size(40px, 57px); }
+    &__item { padding: 10px 0 10px 40px; }
+    &__container {
+      background: #000;
+      padding: 0 48px;
+    }
+  }
+}
+
+@include phablet {
+  #{$root} {
+    &__contact { display: none; }
+
+    &__link { @include font-size(32px, 45px) }
+    &__item { padding: 12px 0 12px 40px; }
+  }
+}
